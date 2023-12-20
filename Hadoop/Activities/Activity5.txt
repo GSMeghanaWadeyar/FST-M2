@@ -1,0 +1,42 @@
+# To create employee data of csv type
+$ vim EmpData.csv
+
+# To switch to hive
+$ hive
+
+# To see the structure of the table
+hive> DESCRIBE employee;
+
+# To add into the employee table from a local file
+hive> LOAD DATA LOCAL INPATH '/EmpData.csv' INTO TABLE employee;
+
+# To see employee table
+hive> SELECT * FROM employee;
+
+# A simple GET request from HDFS
+hive> SELECT * FROM employee;
+
+# Column operations
+hive> SELECT  id, name FROM employee;
+
+# Row operation
+hive> SELECT * FROM employee WHERE salary > 30000;
+
+# Column operation that need aggregation
+hive> SELECT count(*) FROM employee; 
+
+#Exports to HDFS directory
+hive> INSERT OVERWRITE DIRECTORY '/user/root/output/export'
+    > ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    > SELECT * FROM employee;
+
+# To view results from hive
+hive> dfs -ls /user/root/output/export
+
+# To export results to local filesystem
+hive> INSERT OVERWRITE LOCAL DIRECTORY '/export' 
+    > ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+    > SELECT * FROM employee;
+
+# To view the result on linux shell
+$ cat /output.csv

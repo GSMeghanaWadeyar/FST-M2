@@ -1,0 +1,16 @@
+root@4715eb6cddc5:~# touch txtFile.txt
+root@4715eb6cddc5:~# vim txtFile.txt
+root@4715eb6cddc5:~# vim csvFile.csv
+root@4715eb6cddc5:~# hdfs dfs -mkdir /user/meg/textData
+root@4715eb6cddc5:~# hdfs dfs -put txtFile.txt /user/meg/textData
+root@4715eb6cddc5:~# hdfs dfs -put csvFile.csv /user/meg/textData
+root@4715eb6cddc5:~# hdfs dfs -ls /user/meg/textData
+Found 2 items
+-rw-r--r--   1 root supergroup        527 2023-12-13 06:49 /user/meg/textData/csvFile.csv
+-rw-r--r--   1 root supergroup        159 2023-12-13 06:49 /user/meg/textData/txtFile.txt
+root@4715eb6cddc5:~# hdfs dfs -stat "type:%F permissions:%a %u:%g size:%b name:%n" /user/meg/textData
+type:directory permissions:755 root:supergroup size:0 name:textData
+root@4715eb6cddc5:~# hdfs dfs -stat "type:%F permissions:%a %u:%g size:%b name:%n" /user/meg/textData/csvFile.csv
+type:regular file permissions:644 root:supergroup size:527 name:csvFile.csv
+root@4715eb6cddc5:~# hdfs dfs -stat "type:%F permissions:%a %u:%g size:%b name:%n" /user/meg/textData/txtFile.txt
+type:regular file permissions:644 root:supergroup size:159 name:txtFile.txt
