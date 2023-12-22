@@ -1,0 +1,16 @@
+-- Load the input files from HDFS
+allEpisodes = LOAD 'hdfs:///user/meg/project' USING PigStorage('\t') AS (Name:chararray,Dialogue:chararray);
+
+-- Group by name [MAP]
+grpd = GROUP allEpisodes BY Name;
+
+-- Count the total number of words [REDUCE]
+totalCount = FOREACH grpd GENERATE $0 as Character, COUNT($1) as DialogueCount; 
+
+-- Sort by number of lines spoken
+finalCount = ORDER totalCount BY DialogueCount DESC;
+
+-- Delete the output folder
+rmf hdfs:///user/meg/project/PigOutput;
+-- Store the output
+STORE finalCount INTO 'hdfs:///user/meg/project/PigOutput';

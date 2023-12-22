@@ -1,0 +1,14 @@
+# Create a table to store all 3 episodes
+$ hive> CREATE TABLE allEpisodes (name STRING, dialogues STRING)
+      > ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+      > TBLPROPERTIES("skip.header.line.count"="2");
+
+# Load data into the database using a file on your local system (NOT HDFS)
+$ hive> LOAD DATA LOCAL INPATH '/root/scripts' INTO TABLE allEpisodes;
+
+# Count the number of lines spoken by each character and Exports to HDFS directory
+$ hive> INSERT OVERWRITE LOCAL DIRECTORY '/root/ProjectOutput'
+      > ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+      > SELECT name, COUNT(name) as numOfLines FROM allEpisodes
+      > GROUP BY name
+      > ORDER BY numOfLines DESC;
