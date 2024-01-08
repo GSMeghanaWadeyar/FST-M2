@@ -1,0 +1,14 @@
+# Create a table to store episode-IV
+$ hive> CREATE TABLE episodeIV (name STRING, dialogues STRING)
+      > ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+      > TBLPROPERTIES("skip.header.line.count"="2");
+
+# Load data into the database using a file on your local system (NOT HDFS)
+$ hive> LOAD DATA LOCAL INPATH '/root/scripts/episodeIV_dialogues.txt' INTO TABLE episodeIV;
+
+# Count the number of dialogues where the name is Luke and Exports to HDFS directory
+$ hive> INSERT OVERWRITE LOCAL DIRECTORY '/root/ProjectOutput1'
+      > SELECT COUNT(*) FROM episodeIV WHERE name LIKE 'Luke';
+
+
+or SELECT COUNT(*) FROM episodeIV WHERE INSTR(name,'Luke')>0;
